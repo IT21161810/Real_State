@@ -20,8 +20,11 @@ function Login() {
         username,
         password
       })
-      if (res.status === 201) {
-        navigate("/home")
+
+      localStorage.setItem("user", JSON.stringify(res.data.userFound))
+
+      if (res.status === 200) {
+        navigate("/")
       } else {
         setError(res.data.message)
       }
