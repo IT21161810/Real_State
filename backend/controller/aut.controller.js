@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         }
 
         const age = 60 * 60 * 24 * 7;
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY, { expiresIn: age });
+        const token = jwt.sign({ id: user.id ,isAdmin:true}, process.env.JWT_SECRET_KEY, { expiresIn: age });
 
         const userFound = {
             username: user.username,
