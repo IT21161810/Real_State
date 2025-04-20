@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
 import apiRequest from "../../lib/apiRequest";
+import { AuthContext } from "../../context/AuthContext";
 
 function Login() {
-  
+
   const navigate = useNavigate()
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+
+  const { updateUser } = useContext(AuthContext)
 
   const handleSubmit = async (e) => {
     setIsLoading(true)
@@ -16,21 +19,15 @@ function Login() {
     const username = formData.get("username")
     const password = formData.get("password")
     try {
-      const res = await apiRequest.post("http://localhost:8800/api/auth/login", {
+      const res = await apiRequest.post("/auth/login", {
         username,
         password
       })
-
-      localStorage.setItem("user", JSON.stringify(res.data.userFound))
-
-      if (res.status === 200) {
-        navigate("/")
-      } else {
-        setError(res.data.message)
-      }
+      updateUser(res.data.userFound)
+      navigate("/")
     } catch (err) {
-      setError(err.response.data.message)
-    }finally{
+      setError('Invalid username or password')
+    } finally {
       setIsLoading(false)
     }
   }
