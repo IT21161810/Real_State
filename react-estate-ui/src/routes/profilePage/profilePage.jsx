@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Chat from "../../components/chat/Chat";
 import List from "../../components/list/List";
 import apiRequest from "../../lib/apiRequest";
@@ -10,7 +10,7 @@ function ProfilePage() {
 
   const {updateUser,currentUser} =useContext(AuthContext)
   const navigate = useNavigate()
-
+  
   const handleLogout = async () =>{
     try{
       const res = await apiRequest.post("auth/logout")
@@ -27,6 +27,7 @@ function ProfilePage() {
         <div className="wrapper">
           <div className="title">
             <h1>User Information</h1>
+            <Link to="/profile/update" />
             <button>Update Profile</button>
           </div>
           <div className="info">
@@ -38,10 +39,10 @@ function ProfilePage() {
               />
             </span>
             <span>
-              Username: <b>{currentUser.username}</b>
+              Username: <b>{currentUser?.username}</b>
             </span>
             <span>
-              E-mail: <b>{currentUser.email}</b>
+              E-mail: <b>{currentUser?.email}</b>
             </span>
             <span>
             <button className="logout_btn" onClick={handleLogout}>Logout</button>
